@@ -1,5 +1,5 @@
 module "vm_block_storage" {
-  source = "github.com/b-/terraform-bpg-proxmox//modules/block_storage?ref=e0f7598"
+  source = "github.com/b-/terraform-bpg-proxmox//modules/block-storage?ref=e0f7598"
   node    = local.pve_node
   storage = "zssd"
   size    = 10
