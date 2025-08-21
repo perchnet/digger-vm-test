@@ -1,3 +1,5 @@
 projects:
   - name: main
     dir: .
+# auto_merge: true
+# auto_merge_strategy: "squash"

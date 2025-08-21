@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       spec:
+        description: Digger spec input
         required: true
       run_name:
+        description: Digger run name
         required: false
 
 run-name: '${{inputs.run_name}}'
@@ -22,7 +24,8 @@ jobs:
       statuses: write      # required to validate combined PR status
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: ./.github/workflows/infra_connect.yml
       - name: ${{ fromJSON(github.event.inputs.spec).job_id }}
         run: echo "job id ${{ fromJSON(github.event.inputs.spec).job_id }}"
       - uses: diggerhq/digger@vLatest
