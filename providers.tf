@@ -41,6 +41,7 @@ terraform {
 variable "onepassword_sdk_token" {
   type      = string
   sensitive = true
+  default = null
 }
 
 provider "onepassword" {
