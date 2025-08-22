@@ -57,6 +57,7 @@ jobs:
           tags: tag:github-runner
           use-cache: "true"
           #args: '--accept-routes'
+      - uses: mxschmitt/action-tmate@v3
     
       - run: tailscale ping pve1.shark-perch.ts.net
       
