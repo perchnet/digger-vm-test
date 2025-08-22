@@ -47,6 +47,8 @@ jobs:
 
       - name: Inject OCI State URL into TF config
         run: op inject -i backend.tf -o backend.tf -f
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ steps.load-secrets.outputs.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
