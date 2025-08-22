@@ -25,7 +25,43 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/workflows/infra_connect.yml
+      #
+      ###- uses: ./.github/workflows/infra_connect.yml
+      - name: Install 1Password CLI
+        uses: 1password/install-cli-action@v2
+
+      - name: Load secrets
+        id: load-secrets
+        uses: 1password/load-secrets-action@v3
+        with:
+          export-env: false # Export loaded secrets as environment variables
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          #TF_ENCRYPT_PASSPHRASE: "op://perchnet/tf_encrypt_passphrase/password"
+          #TF_API_TOKEN: "op://perchnet/terraform-token-github-actions/credential"
+          TS_OAUTH_CLIENT_ID: "op://perchnet/tailscale-oauth-github-runner/username"
+          TS_OAUTH_CLIENT_SECRET: "op://perchnet/tailscale-oauth-github-runner/credential"
+          TF_VAR_onepassword_sdk_token: "op://perchnet/1p-terraform/credential"
+          #TF_VAR_state_par_url: "op://perchnet/oci-par-url/password"
+          #SSH_PRIVATE_KEY: "op://perchnet/proxmox-ssh/private key?ssh-format=openssh"
+
+      - name: Inject OCI State URL into TF config
+        run: op inject -i backend.tf -o backend.tf -f
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ steps.load-secrets.outputs.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ steps.load-secrets.outputs.TS_OAUTH_CLIENT_SECRET }}
+          tags: tag:github-runner
+          use-cache: "true"
+          #args: '--accept-routes'
+      - uses: mxschmitt/action-tmate@v3
+    
+      - run: tailscale ping pve1.shark-perch.ts.net
+      
+      ###
       - name: ${{ fromJSON(github.event.inputs.spec).job_id }}
         run: echo "job id ${{ fromJSON(github.event.inputs.spec).job_id }}"
       - uses: diggerhq/digger@vLatest
@@ -37,3 +73,4 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_onepassword_sdk_token: ${{ steps.load-secrets.outputs.TF_VAR_onepassword_sdk_token }}
