@@ -1,5 +1,5 @@
 module "block_storage" {
-  source = "github.com/b-/terraform-bpg-proxmox//modules/block-storage?ref=e0f7598"
+  source  = "github.com/b-/terraform-bpg-proxmox//modules/block-storage?ref=4c2affc"
   node    = local.pve_node
   storage = "zssd"
   size    = 10
@@ -20,7 +20,7 @@ resource "terraform_data" "tskey_stable_replacement_hook" {
   input = [module.vm.creation_date]
 }
 module "vm" {
-  source = "github.com/b-/terraform-bpg-proxmox//modules/vm?ref=e0f7598"
+  source = "github.com/b-/terraform-bpg-proxmox//modules/vm?ref=4c2affc"
   #started = true
   vcpu   = 4
   scsihw = "virtio-scsi-single"

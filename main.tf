@@ -1,4 +1,4 @@
 
 resource "terraform_data" "foo" {
-    input = "test1"
+  input = "test1"
 }

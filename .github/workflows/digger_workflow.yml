@@ -42,6 +42,7 @@ jobs:
           TS_OAUTH_CLIENT_ID: "op://perchnet/tailscale-oauth-github-runner/username"
           TS_OAUTH_CLIENT_SECRET: "op://perchnet/tailscale-oauth-github-runner/credential"
           TF_VAR_onepassword_sdk_token: "op://perchnet/1p-terraform/credential"
+          TF_VAR_state_par_url: "op://perchnet/oci-par-url/password"
           #SSH_PRIVATE_KEY: "op://perchnet/proxmox-ssh/private key?ssh-format=openssh"
 
       - name: Connect to Tailscale
