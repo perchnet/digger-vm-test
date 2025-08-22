@@ -1,9 +1,6 @@
 terraform {
   backend "http" {
     update_method = "PUT"
-    address       = var.state_par_url
+    address       = "op://perchnet/oci-par-url/password"
   }
-}
-variable "state_par_url" {
-  type = string
 }

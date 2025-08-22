@@ -37,14 +37,16 @@ jobs:
           export-env: false # Export loaded secrets as environment variables
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TF_ENCRYPT_PASSPHRASE: "op://perchnet/tf_encrypt_passphrase/password"
-          TF_API_TOKEN: "op://perchnet/terraform-token-github-actions/credential"
+          #TF_ENCRYPT_PASSPHRASE: "op://perchnet/tf_encrypt_passphrase/password"
+          #TF_API_TOKEN: "op://perchnet/terraform-token-github-actions/credential"
           TS_OAUTH_CLIENT_ID: "op://perchnet/tailscale-oauth-github-runner/username"
           TS_OAUTH_CLIENT_SECRET: "op://perchnet/tailscale-oauth-github-runner/credential"
           TF_VAR_onepassword_sdk_token: "op://perchnet/1p-terraform/credential"
-          TF_VAR_state_par_url: "op://perchnet/oci-par-url/password"
+          #TF_VAR_state_par_url: "op://perchnet/oci-par-url/password"
           #SSH_PRIVATE_KEY: "op://perchnet/proxmox-ssh/private key?ssh-format=openssh"
 
+      - name: Inject OCI State URL into TF config
+        run: op inject -i backend.tf -o backend.tf -f
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
