@@ -63,7 +63,7 @@ jobs:
           tags: tag:github-runner
           use-cache: "true"
           #args: '--accept-routes'
-      - uses: mxschmitt/action-tmate@v3
+      # - uses: mxschmitt/action-tmate@v3
     
       - run: tailscale ping pve1.shark-perch.ts.net
       
@@ -75,7 +75,7 @@ jobs:
           digger-spec: ${{ inputs.spec }}
           setup-aws: false
           setup-terraform: true
-          terraform-version: 1.5.5
+          terraform-version: 1.13.2
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
