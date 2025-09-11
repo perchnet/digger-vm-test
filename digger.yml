@@ -1,5 +1,9 @@
 projects:
-  - name: main
-    dir: .
+  - name: home
+    dir: ./tf/home
+    workspace: home
+  - name: oci
+    workspace: oci
+    dir: ./tf/oci
 # auto_merge: true
 # auto_merge_strategy: "squash"
