@@ -1,8 +1,8 @@
 terraform {
   backend "oci" {
     #bucket = "terraform-state"
-    bucket = "terraform-state"
-    region = "us-ashburn-1"
+    bucket    = "terraform-state"
+    region    = "us-ashburn-1"
     namespace = "idlv6vmnu8ya"
     #config_file_profile = "ocicli"
     #private_key_path = "/var/home/bri/dev/digger-vm-test/oci.pem"

@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    slack = {
+      source  = "tfstack/slack"
+      version = "0.1.8"
+    }
     #ct = { # CoreOS Transpiler
     #  source  = "poseidon/ct"
     #  version = "0.13.0"
@@ -114,4 +118,8 @@ provider "proxmox" {
       address = local.pve_ssh_address
     }
   }
+}
+
+provider "slack" {
+  # Configuration options
 }
