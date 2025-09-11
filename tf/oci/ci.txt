@@ -1,0 +1,29 @@
+    user_data        = <<-EOF
+      #cloud-config
+      hostname: vm
+      ssh_authorized_keys: ${jsonencode(data.onepassword_item.proxmox_ssh.public_key)}
+      write_file:
+        - path: /etc/fstab
+          append: true
+          content: |
+            /dev/vda /srv ext4 x-systemd.makefs,x-systemd.mount-timeout=2,nofail 0 2
+      timezone: America/New_York
+      runcmd:
+        - ['sh', '-c', 'curl -fsSL https://tailscale.com/install.sh | sh']
+        - [ 'tailscale', 'up', '--authkey', ${terraform_data.tskey_stable.output},
+            '--accept-routes',
+            '--accept-dns',
+            '--ssh',
+            '--advertise-tags=${join(",", local.ts_tags)}'
+          ]
+        - [ '/usr/bin/env', 'HOME=/root','sh', '-c', 'curl -fsSL https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-periphery.py | python3' ]
+        - [ 'systemctl', 'enable', '--now', 'periphery' ]
+        - [ 'tailscale', 'serve', '--bg', '8120' ]
+        - [ 'sh', '-c', 'curl -fsSL https://get.docker.com | sh' ]
+        - [ 'sh', '-c', 'echo "/dev/vda /srv ext4 x-systemd.makefs,x-systemd.mount-timeout=2,nofail 0 2" >> /etc/fstab' ]
+        - [ 'systemctl', 'enable', '--now', 'docker' ]
+      power_state:
+        mode: reboot
+        message: rebooting to run systemd.makefs
+        timeout: 480
+    EOF
