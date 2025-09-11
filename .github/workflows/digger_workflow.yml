@@ -42,13 +42,19 @@ jobs:
           TS_OAUTH_CLIENT_ID: "op://perchnet/tailscale-oauth-github-runner/username"
           TS_OAUTH_CLIENT_SECRET: "op://perchnet/tailscale-oauth-github-runner/credential"
           TF_VAR_onepassword_sdk_token: "op://perchnet/1p-terraform/credential"
+          OCI_region: "op://perchnet/oci-terraform/oci-meta/region"
+          OCI_user_ocid: "op://perchnet/oci-terraform/oci-meta/user_ocid"
+          OCI_compartment_ocid: "op://perchnet/oci-terraform/oci-meta/compartment_ocid"
+          OCI_tenancy_ocid: "op://perchnet/oci-terraform/oci-meta/tenancy_ocid"
+          OCI_fingerprint: "op://perchnet/oci-terraform/oci-meta/fingerprint"
+          OCI_private_key: "op://perchnet/oci-terraform/private key"
           #TF_VAR_state_par_url: "op://perchnet/oci-par-url/password"
           #SSH_PRIVATE_KEY: "op://perchnet/proxmox-ssh/private key?ssh-format=openssh"
 
-      - name: Inject OCI State URL into TF config
-        run: op inject -i backend.tf -o backend.tf -f
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      #- name: Inject OCI State URL into TF config
+      #  run: op inject -i backend.tf -o backend.tf -f
+      #  env:
+      #    OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
@@ -74,3 +80,9 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_onepassword_sdk_token: ${{ steps.load-secrets.outputs.TF_VAR_onepassword_sdk_token }}
+          OCI_region: ${{ steps.load-secrets.outputs.OCI_region }}
+          OCI_user_ocid: ${{ steps.load-secrets.outputs.OCI_user_ocid }}
+          OCI_compartment_ocid: ${{ steps.load-secrets.outputs.OCI_compartment_ocid }}
+          OCI_tenancy_ocid: ${{ steps.load-secrets.outputs.OCI_tenancy_ocid }}
+          OCI_fingerprint: ${{ steps.load-secrets.outputs.OCI_fingerprint }}
+          OCI_private_key: ${{ steps.load-secrets.outputs.OCI_private_key }}
