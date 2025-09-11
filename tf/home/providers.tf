@@ -67,7 +67,7 @@ data "onepassword_item" "proxmox_ssh" {
 }
 
 module "pkcs8_to_pem" {
-  source = "./modules/ssh-key-converter"
+  source = "../../modules/ssh-key-converter"
 
   pkcs8_key_content = data.onepassword_item.proxmox_ssh.private_key
 }
